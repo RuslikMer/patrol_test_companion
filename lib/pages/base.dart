@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_driver/flutter_driver.dart' as drive;
 
 import 'cart.dart';
 import 'catalog.dart';
@@ -17,8 +16,6 @@ import 'wishlist.dart';
 
 class Base {
   final WidgetTester tester;
-
-  late drive.FlutterDriver driver;
 
   NavBar get navBar => NavBar(tester);
 

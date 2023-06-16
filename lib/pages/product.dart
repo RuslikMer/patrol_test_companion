@@ -3,7 +3,6 @@ import 'package:bambinifashion/modules/product_single/presentation/image_carouse
 import 'package:bambinifashion/modules/product_single/presentation/size_guide_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_driver/flutter_driver.dart' as drive;
 import 'base.dart';
 
 class Product extends Base {

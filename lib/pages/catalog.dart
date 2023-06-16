@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_driver/flutter_driver.dart' as drive;
 import '../helper/globEnv.dart';
 import 'base.dart';
 import 'login.dart';

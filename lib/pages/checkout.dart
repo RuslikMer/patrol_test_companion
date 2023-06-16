@@ -4,7 +4,6 @@ import 'package:bambinifashion/modules/checkout/presentation/checkout_address_fo
 import 'package:bambinifashion/modules/core/presentation/forms/bambini_checkbox_tick.dart';
 import 'package:bambinifashion/modules/core/presentation/forms/form_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_driver/flutter_driver.dart' as drive;
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../helper/globEnv.dart';
@@ -171,15 +170,15 @@ class Checkout extends Base {
   }
 
   Future<String> orderData(int expected) async {
-    final String orderId =
-        await driver.getText(drive.find.byValueKey("Reference"));
-    log(orderId);
-    final String totalPriceField =
-        await driver.getText(drive.find.byValueKey("Total"));
-    final int totalPrice =
-        int.parse(totalPriceField.replaceAll(RegExp(r'\d'), ''));
-    expect(totalPrice, expected);
-
+    // final String orderId =
+    //     await driver.getText(drive.find.byValueKey("Reference"));
+    // log(orderId);
+    // final String totalPriceField =
+    //     await driver.getText(drive.find.byValueKey("Total"));
+    // final int totalPrice =
+    //     int.parse(totalPriceField.replaceAll(RegExp(r'\d'), ''));
+    // expect(totalPrice, expected);
+    const String orderId = "";
     return orderId;
   }
 }

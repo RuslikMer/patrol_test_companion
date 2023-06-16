@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_driver/flutter_driver.dart' as drive;
 import 'base.dart';
 
 class Search extends Base {
@@ -45,10 +44,10 @@ class Search extends Base {
         break;
     }
 
-    final String name =
-        await driver.getText(drive.find.byValueKey(sectionPath));
-    log(sectionPath);
-    log(name);
+    // final String name =
+    //     await driver.getText(drive.find.byValueKey(sectionPath));
+    // log(sectionPath);
+    // log(name);
     await tester.tap(find.widgetWithText(IconButtonTheme, sectionPath));
 
     switch (section) {
