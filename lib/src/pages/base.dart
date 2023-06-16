@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'cart.dart';
-import 'catalog.dart';
+import '../../pages/catalog.dart';
 import 'checkout.dart';
 import 'home.dart';
 import 'login.dart';
-import 'menu.dart';
+import '../../pages/menu.dart';
 import 'nav_bar.dart';
 import 'product.dart';
 import 'profile.dart';

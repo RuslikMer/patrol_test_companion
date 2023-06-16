@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'base.dart';
+import '../src/pages/base.dart';
 
 class Menu extends Base {
   final String menuTab = "Menu";
