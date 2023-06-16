@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../src/helper/globEnv.dart';
-import '../src/pages/base.dart';
+import '../helper/globEnv.dart';
+import 'base.dart';
 import 'login.dart';
 
 class Catalog extends Base {
