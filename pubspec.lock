@@ -70,11 +70,28 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  flutter_stripe:
+    dependency: "direct main"
+    description:
+      path: "packages/stripe"
+      ref: main
+      resolved-ref: d2bfbc73146761c56977ded9cbd9e0d00a6fc801
+      url: "https://github.com/Kuodster/flutter_stripe.git"
+    source: git
+    version: "9.2.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
+  freezed_annotation:
+    dependency: transitive
+    description:
+      name: freezed_annotation
+      sha256: aeac15850ef1b38ee368d4c53ba9a847e900bb2c53a4db3f6881cbb3cb684338
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   http_parser:
     dependency: transitive
     description:
@@ -91,6 +108,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      sha256: b10a7b2ff83d83c777edba3c6a0f97045ddadd56c944e1a23a3fdf43a1bf4467
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.8.1"
   lints:
     dependency: transitive
     description:
@@ -131,6 +156,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.3"
+  plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: plugin_platform_interface
+      sha256: "6a2128648c854906c53fa8e33986fc0247a1116122f9534dd20e3ab9e16a32bc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -168,6 +201,33 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  stripe_android:
+    dependency: transitive
+    description:
+      path: "packages/stripe_android"
+      ref: main
+      resolved-ref: d2bfbc73146761c56977ded9cbd9e0d00a6fc801
+      url: "https://github.com/Kuodster/flutter_stripe.git"
+    source: git
+    version: "9.2.1"
+  stripe_ios:
+    dependency: transitive
+    description:
+      path: "packages/stripe_ios"
+      ref: main
+      resolved-ref: d2bfbc73146761c56977ded9cbd9e0d00a6fc801
+      url: "https://github.com/Kuodster/flutter_stripe.git"
+    source: git
+    version: "9.2.1"
+  stripe_platform_interface:
+    dependency: transitive
+    description:
+      path: "packages/stripe_platform_interface"
+      ref: main
+      resolved-ref: d2bfbc73146761c56977ded9cbd9e0d00a6fc801
+      url: "https://github.com/Kuodster/flutter_stripe.git"
+    source: git
+    version: "9.2.1"
   term_glyph:
     dependency: transitive
     description:
@@ -202,4 +262,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=3.0.2 <4.0.0"
-  flutter: ">=1.17.0"
+  flutter: ">=3.0.0"
