@@ -44,9 +44,12 @@ class Base {
     required this.tester,
   });
 
-  // setUpAll () async {
-  //   driver = drive.FlutterDriver.connectedTo();
-  // }
+  Future<void> scrollUpByGesture(double startY, double stepY) async {
+    final gesture = await tester.startGesture(Offset(0, startY)); //Position of the scrollview
+    await gesture.moveBy(Offset(0, -stepY)); //How much to scroll by
+    await gesture.up();
+    await tester.pump();
+  }
 
   /// Generation of a random string, the number of digits
   /// in a string is set by the parameter.

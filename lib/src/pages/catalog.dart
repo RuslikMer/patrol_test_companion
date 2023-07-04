@@ -82,19 +82,19 @@ class Catalog extends Base {
   }
 
   Future<void> checkPagination() async {
-    // for (int i = 1; i <= 13; i++) {
-    //   scrollTo(5, 740, 5, 100);
-    // }
-    final forward = find.widgetWithText(IconButtonTheme, "Forward");
-    await tester.scrollUntilVisible(forward, 100.0);
-    await tester.tap(forward);
-    // for (int i = 1; i <= 12; i++) {
-    //   scrollTo(5, 740, 5, 100);
-    // }
+    await Future.delayed(const Duration(seconds: 10));
+    for (int i = 1; i <= 13; i++) {
+      await scrollUpByGesture(740, -650);
+    }
 
-    final pagination = find.widgetWithText(IconButtonTheme, "2 OF");
-    await tester.scrollUntilVisible(pagination, 100.0);
-    //expect(find.text("2 OF"), "");
+    final forward = find.byType(IconButton);
+    print(forward.toString());
+    await tester.tap(forward);
+    for (int i = 1; i <= 12; i++) {
+      await scrollUpByGesture(740, -650);
+    }
+
+    expect(find.text("2 OF"), findsOneWidget);
   }
 
   Future<void> quickFilter() async {
