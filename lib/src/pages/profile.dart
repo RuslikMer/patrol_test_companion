@@ -21,23 +21,29 @@ class Profile extends Base{
       await Future.delayed(const Duration(milliseconds: 1000));
     });
     await tester.tap(find.widgetWithText(IconButtonTheme, tabName), warnIfMissed: false);
+    await tester.pump();
   }
 
   Future<void> updateData(String name, String lastName, String email, String password) async {
     await tester.pump(const Duration(seconds: 2));
     await tester.tap(find.byType(TextButton));
+    await tester.pump();
     await tester.tap(find.byType(TextFormField).first);
+    await tester.pump();
     fieldText.clear();
     await tester.enterText(find.byType(TextFormField).first, name);
     await tester.tap(find.widgetWithText(TextFormField, 'Last Name *'));
+    await tester.pump();
     fieldText.clear();
     await tester.enterText(find.widgetWithText(TextFormField, 'Last Name *'), lastName);
     await tester.tap(find.widgetWithText(TextFormField, 'Your E-mail *'));
+    await tester.pump();
     fieldText.clear();
     await tester.enterText(find.widgetWithText(TextFormField, 'Your E-mail *'), email);
     await tester.enterText(find.widgetWithText(TextFormField, 'New password'), password);
     await tester.enterText(find.byType(TextFormField).last, password);
     await tester.tap(find.byType(FormButton));
+    await tester.pump();
   }
 
   Future<void> logOut() async {
@@ -47,5 +53,6 @@ class Profile extends Base{
     // find.widgetWithText(InkWell, 'Logout')
     // find.widgetWithText(CustomPaint, 'Logout')
     await tester.tap(find.widgetWithText(GestureDetector, "LOG OUT"));
+    await tester.pump();
   }
 }

@@ -11,7 +11,11 @@ class Menu extends Base {
 
   Future<void> goToMenuCategory(String category) async {
     await navBar.goToNavTab(menuTab);
+    //await tester.scrollUntilVisible(
+    //    find.widgetWithText(ListTileTheme, category), -100.0, scrollable: find.byType(Scrollable).last);
+    print(find.widgetWithText(ListTile, category));
     await tester.tap(find.widgetWithText(ListTile, category));
+    await tester.pump();
     //await categoryCheck(category);
   }
 
@@ -31,7 +35,7 @@ class Menu extends Base {
     // find.widgetWithText(Ink, 'ALBANIA')
     // find.widgetWithText(MouseRegion, 'ALBANIA')
     // find.widgetWithText(InkWell, 'ALBANIA')
-    // expect(find.text(country), findsOneWidget);
+    expect(find.text(country), findsOneWidget);
   }
 
   Future<void> changeCurrency(String currency) async {
@@ -40,12 +44,13 @@ class Menu extends Base {
     await tester.pump(const Duration(seconds: 5));
     await tester.tap(find.widgetWithText(IconButtonTheme, currency));
     List symbol = currency.split(" ");
-    expect(find.text(symbol[0]), "");
+    expect(find.text(symbol[0]), findsOneWidget);
   }
 
   Future<void> goToProfile() async {
     await navBar.goToNavTab(menuTab);
     await tester.tap(find.widgetWithText(ListTile, "MY ACCOUNT"));
+    await tester.pump();
   }
 
   Future<void> logIn(String email, String password) async {

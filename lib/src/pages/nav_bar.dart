@@ -14,6 +14,9 @@ class NavBar extends Base {
       navButton,
       warnIfMissed: false,
     );
-    await tester.pump(const Duration(seconds: 7));
+
+    await tester.pump(const Duration(seconds: 5));
+
+    //await Future.delayed(Duration(seconds: 10));
   }
 }

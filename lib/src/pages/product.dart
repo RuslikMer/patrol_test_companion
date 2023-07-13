@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:bambinifashion/modules/product_single/presentation/image_carousel.dart';
 import 'package:bambinifashion/modules/product_single/presentation/size_guide_button.dart';
+import 'package:bambinifashion/modules/core/presentation/arrow_right_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'base.dart';
@@ -28,32 +29,36 @@ class Product extends Base {
     // find.widgetWithText(GestureDetector, 'Select size')
     // find.widgetWithText(CustomPaint, 'Select size')
     // find.widgetWithText(GlowingOverscrollIndicator, 'Select size')
+    await Future.delayed(Duration(seconds: 5));
     await tester.tap(find.byType(Opacity));
+    await tester.pump(const Duration(seconds: 5));
     await selectSize();
     //final String priceField = await driver.getText(drive.find.byValueKey("\$"));
     //final int price = int.parse(priceField.replaceAll(RegExp(r'\D'), ''));
     //log(priceField);
-    await tester.tap(find.widgetWithText(IconButtonTheme, "SHOPPING BAG"));
+    await tester.tap(find.widgetWithText(GestureDetector, 'ADD TO BAG'));
+    await tester.pump(const Duration(seconds: 5));
+    // await tester.pumpAndSettle();
+    // find.text('SHOPPING BAG')
+    // find.widgetWithText(Align, 'SHOPPING BAG')
+    // find.widgetWithText(MouseRegion, 'SHOPPING BAG')
+    // find.widgetWithText(InkWell, 'SHOPPING BAG')
+    // find.widgetWithText(ElevatedButton, 'SHOPPING BAG')
+    // find.widgetWithText(Expanded, 'SHOPPING BAG')
+    await scrollUpByGesture(500, -100);
+    await tester.ensureVisible(find.widgetWithText(Expanded, 'SHOPPING BAG'));
+    await tester.tap(find.widgetWithText(Expanded, 'SHOPPING BAG'));
+    await tester.pump(const Duration(seconds: 2));
+    // find.byType(OutlinedButton)
+    // find.widgetWithText(Expanded, 'CONTINUE SHOPPING')
     int price = 0;
+
     return price;
   }
 
   Future<void> selectSize() async {
-    // WebElement sizeList = driver.findElement(By.xpath("//XCUIElementTypeTable"));
-    // List<WebElement> sizes = sizeList.findElements(By.xpath("//XCUIElementTypeCell[@name=\"XUIElementTypeDimensionCell\"]"));
-    // WebElement itemSize = sizes.get(0);
-    // for (WebElement size : sizes) {
-    //   if (size.findElements(By.xpath("//XCUIElementTypeButton[@name=\"Request size\"]")).isEmpty()) {
-    //     itemSize = size;
-    //
-    //     break;
-    //   }
-    // }
-    // System.out.println(itemSize);
-    //
-    // wait.until(ExpectedConditions.elementToBeClickable(itemSize));
-    // itemSize.click();
-    // await tester.tap(find.widgetWithText(IconButtonTheme, category));
+    await tester.tap(find.byType(ArrowRightIcon).first);
+    await tester.pump(const Duration(seconds: 2));
   }
 
   Future<void> sendRequestSize() async {
@@ -67,13 +72,18 @@ class Product extends Base {
     // find.widgetWithText(CustomPaint, 'Select size')
     // find.widgetWithText(GlowingOverscrollIndicator, 'Select size')
     await tester.tap(find.byType(Opacity));
+    await tester.pump();
     await tester.tap(find.widgetWithText(ListTile, "Request size"));
+    await tester.pump();
     await tester.enterText(find.widgetWithText(TextFormField, "Enter e-mail"),
         "$str@bambinifashion.com");
     await tester.tap(find.widgetWithText(Row, "SEND REQUEST"));
+    await tester.pump();
     await tester.tap(
         find.widgetWithText(GestureDetector, "Your request has been sent."));
+    await tester.pump();
     await tester.tap(find.widgetWithText(Row, 'ClOSE'));
+    await tester.pump();
   }
 
   Future<void> checkSizeGuide() async {
@@ -86,17 +96,20 @@ class Product extends Base {
     // find.widgetWithText(PhysicalShape, 'Size guide')
     // find.byType(SizeGuideButton)
     await tester.tap(find.byType(SizeGuideButton));
+    await tester.pump();
     await tester.tap(find.widgetWithText(GestureDetector, "Switch to inches"));
+    await tester.pump();
     await tester.tap(find.widgetWithText(GestureDetector, "Switch to cm"));
+    await tester.pump();
   }
 
   Future<void> fullView() async {
     // find.byType(ImageCarousel)
     // find.byType(SingleChildScrollView)
-    await tester.pump(const Duration(seconds: 7));
     await tester.tap(find.byType(ImageCarousel));
-    await tester.pump(const Duration(seconds: 5));
+    await tester.pump();
     await tester.tap(find.bySemanticsLabel('Back'));
+    await tester.pump();
   }
 
   Future<void> openTab(String tabName, bool back) async {
@@ -126,13 +139,13 @@ class Product extends Base {
     }
 
     for (String subTab in subTabs) {
-    // find.widgetWithText(Align, 'Product Features')
-    // find.widgetWithText(ClipRect, 'Product Features')
-    // find.widgetWithText(Container, 'Product Features')
-    // find.widgetWithText(ExpansionTile, 'Product Features')
-    // find.byType(ProductDescription)
-    // find.widgetWithText(RawGestureDetector, 'Product Features')
-    //   await tester.scrollUntilVisible(find.widgetWithText(ExpansionTile, subTab), -50.0, scrollable: find.byType(Scrollable).last);
+      // find.widgetWithText(Align, 'Product Features')
+      // find.widgetWithText(ClipRect, 'Product Features')
+      // find.widgetWithText(Container, 'Product Features')
+      // find.widgetWithText(ExpansionTile, 'Product Features')
+      // find.byType(ProductDescription)
+      // find.widgetWithText(RawGestureDetector, 'Product Features')
+      //   await tester.scrollUntilVisible(find.widgetWithText(ExpansionTile, subTab), -50.0, scrollable: find.byType(Scrollable).last);
 
       expect(find.widgetWithText(ExpansionTile, subTab), findsOneWidget);
     }
@@ -144,16 +157,14 @@ class Product extends Base {
 
   Future<void> sharing() async {
     await tester.tap(find.widgetWithText(IconButtonTheme, "Share"));
-    expect(find.text("Copy"), "");
+    await tester.pump();
+    expect(find.text("Copy"), findsOneWidget);
     await tester.tap(find.widgetWithText(IconButtonTheme, "Close"));
+    await tester.pump();
   }
 
   Future<void> scrollProductsCarousel() async {
-    await tester.scrollUntilVisible(
-        find.widgetWithText(IconButtonTheme, "Horizontal scroll bar, 1 page"),
-        -100.0);
-    final scrollHor =
-        find.widgetWithText(IconButtonTheme, "Horizontal scroll bar, 1 page");
+    await scrollUpByGesture(740, -690);
     // final Point location = scrollHor.getLocation();
     // final int x = location.getX();
     // final int y = location.getY();
@@ -163,10 +174,9 @@ class Product extends Base {
   }
 
   Future<void> goToCrossSaleProduct() async {
-    await tester.scrollUntilVisible(
-        find.widgetWithText(IconButtonTheme, "getProductCard"), -200.0, scrollable: find.byType(Scrollable).last);
+    await scrollUpByGesture(740, -690);
     await tester.tap(find.widgetWithText(IconButtonTheme, "getProductCard"));
-    await tester.scrollUntilVisible(
-        find.widgetWithText(IconButtonTheme, "getProductCard"), -200.0, scrollable: find.byType(Scrollable).last);
+    await tester.pump();
+    await scrollUpByGesture(740, -690);
   }
 }

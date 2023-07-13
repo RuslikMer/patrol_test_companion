@@ -12,6 +12,7 @@ class Login extends Base {
     await tester.enterText(find.byType(TextFormField).first, email);
     await tester.enterText(find.byType(TextFormField).last, password);
     await tester.tap(find.byType(FormButton).last);
+    await tester.pump(const Duration(seconds: 5));
   }
 
   Future<void> forgotPassword() async {
@@ -38,17 +39,22 @@ class Login extends Base {
     await tester.enterText(find.widgetWithText(TextFormField, 'New password'), password);
     await tester.enterText(find.byType(TextFormField).last, password);
     await tester.tap(find.byType(FormButton));
+    await tester.pump(const Duration(seconds: 5));
   }
 
   Future<void> guestLogin() async {
+    await tester.pump(const Duration(seconds: 5));
     await tester.enterText(find.byType(TextFormField).first, "${generateString(5)}@bambinifashion.com");
     await tester.tap(find.byType(FormButton).first);
+    await tester.pump(const Duration(seconds: 10));
   }
 
   Future<void> deleteAccount() async {
     await profile.goToTabFromProfile('PERSONAL INFORMATION');
     await tester.pump(const Duration(seconds: 2));
     await tester.tap(find.byType(DeleteAccountButton));
+    await tester.pump(const Duration(seconds: 5));
     await tester.tap(find.byType(TextButton).last);
+    await tester.pump(const Duration(seconds: 5));
   }
 }

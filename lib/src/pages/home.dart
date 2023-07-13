@@ -8,15 +8,18 @@ class Home extends Base {
   Home(WidgetTester tester) : super(tester: tester);
 
   Future<void> selectCategory(String sectionName) async {
-    await tester.pump(const Duration(seconds: 7));
+    // await tester.pump(const Duration(seconds: 7));
     await tester.tap(find.widgetWithText(CategoryTile, sectionName));
+    await tester.pump();
   }
 
   Future<void> openHomePage() async {
     await tester.tap(find.widgetWithText(IconButtonTheme, "NEXT"));
+    await tester.pump();
   }
 
   Future<void> goToWishlist() async {
     await tester.tap(find.widgetWithText(IconButtonTheme, "favOutlineIcon"));
+    await tester.pump();
   }
 }

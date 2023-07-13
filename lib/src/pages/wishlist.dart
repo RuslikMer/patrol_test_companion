@@ -12,15 +12,18 @@ class Wishlist extends Base {
     //     await driver.getText(drive.find.byValueKey("favOutlineIcon"));
     // final int countBefore = int.parse(wishlistCount);
     await tester.tap(find.byType(IconButton).first);
+    await tester.pump();
     // final int countAfter = int.parse(wishlistCount);
     //expect(actual, matcher) countAfter < countBefore;
   }
 
   Future<void> goToProduct() async {
     await tester.tap(find.byType(ListingProductImage));
+    await tester.pump();
   }
 
   Future<void> addToCart() async {
     await tester.tap(find.widgetWithText(IconButtonTheme, ''));
+    await tester.pump();
   }
 }

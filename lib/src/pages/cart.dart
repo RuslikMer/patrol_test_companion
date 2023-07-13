@@ -13,7 +13,11 @@ class Cart extends Base {
   Future<void> goToCheckout() async {
     //await tester.tap(find.widgetWithText(IconButtonTheme, "Import duties included"));
     //await totalAmount();
-    await tester.tap(find.byType(ElevatedButton).last);
+    await Future.delayed(Duration(seconds: 5));
+    await tester.tap(find.widgetWithText(GestureDetector, 'CHECKOUT'));
+    await tester.pump();
+    // await tester.tap(find.byType(ElevatedButton).last);
+    // await tester.pump();
   }
 
   Future<int> totalAmount() async {
@@ -47,6 +51,7 @@ class Cart extends Base {
     // final int expected = (itemsPrice + shippingPrice - discount - storeCredit);
     // expect(totalPrice, expected);
     const int totalPrice = 0;
+
     return totalPrice;
   }
 
@@ -55,5 +60,6 @@ class Cart extends Base {
         .tap(find.widgetWithText(GestureDetector, "Have a promo voucher?"));
     await tester.enterText(find.byType(TextField), voucher);
     await tester.tap(find.byType(FormButton));
+    await tester.pump();
   }
 }
