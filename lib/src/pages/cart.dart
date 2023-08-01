@@ -3,6 +3,7 @@ import 'package:bambinifashion/modules/core/presentation/forms/form_button.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'base.dart';
+import 'package:patrol/patrol.dart';
 
 class Cart extends Base {
   final String digit = "\"d";
@@ -10,14 +11,10 @@ class Cart extends Base {
   //Constructor
   Cart(WidgetTester tester) : super(tester: tester);
 
-  Future<void> goToCheckout() async {
+  Future<void> goToCheckout(PatrolTester $) async {
     //await tester.tap(find.widgetWithText(IconButtonTheme, "Import duties included"));
     //await totalAmount();
-    await Future.delayed(Duration(seconds: 5));
-    await tester.tap(find.widgetWithText(GestureDetector, 'CHECKOUT'));
-    await tester.pump();
-    // await tester.tap(find.byType(ElevatedButton).last);
-    // await tester.pump();
+    await $(find.widgetWithText(GestureDetector, 'CHECKOUT')).tap();
   }
 
   Future<int> totalAmount() async {
@@ -29,7 +26,7 @@ class Cart extends Base {
       //final String discountField = await driver.getText(drive.find.byValueKey("Discount"));
       //discount = int.parse(discountField.replaceAll(RegExp(r'\D'), ''));
     } on Exception catch (_) {
-      log("ignored");
+      log('ignored');
     }
 
     int storeCredit = 0;
@@ -37,7 +34,7 @@ class Cart extends Base {
       // final String storeCreditField = await driver.getText(drive.find.byValueKey("Credit"));
       // storeCredit = int.parse(storeCreditField.replaceAll(RegExp(r'\D'), ''));
     } on Exception catch (_) {
-      log("ignored");
+      log('ignored');
     }
 
     // final String shippingPriceField =
@@ -55,11 +52,9 @@ class Cart extends Base {
     return totalPrice;
   }
 
-  Future<void> useVoucher(String voucher) async {
-    await tester
-        .tap(find.widgetWithText(GestureDetector, "Have a promo voucher?"));
-    await tester.enterText(find.byType(TextField), voucher);
-    await tester.tap(find.byType(FormButton));
-    await tester.pump();
+  Future<void> useVoucher(PatrolTester $, String voucher) async {
+    await $(find.widgetWithText(GestureDetector, 'Have a promo voucher?')).tap();
+    await $(find.byType(TextField)).enterText(voucher);
+    await $(find.byType(FormButton)).tap();
   }
 }

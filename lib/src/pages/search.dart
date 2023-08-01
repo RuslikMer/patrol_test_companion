@@ -3,75 +3,74 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'base.dart';
+import 'package:patrol/patrol.dart';
 
 class Search extends Base {
   //Constructor
   Search(WidgetTester tester) : super(tester: tester);
 
-  Future<void> searchText(String searchRequest, bool press) async {
-    await navBar.goToNavTab("Search");
-    await tester.enterText(find.byType(TextField), searchRequest);
+  Future<void> searchText(PatrolTester $, String searchRequest, bool press) async {
+    await navBar.goToNavTab($, 'Search');
+    await $(find.byType(TextField)).enterText(searchRequest);
     if (press) {
-      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await $.tester.sendKeyEvent(LogicalKeyboardKey.enter);
     }
   }
 
-  Future<void> goToLiveSearchResult(String section) async {
-    final String sectionPath = section;
+  Future<void> goToLiveSearchResult(PatrolTester $, String section) async {
+    String sectionPath = '';
     switch (section) {
-      case "Product":
-      // find.widgetWithText(Row, 'PRODUCTS')
-      // find.widgetWithText(Padding, 'PRODUCTS')
-      // find.widgetWithText(RawGestureDetector, 'PRODUCTS')
-      // find.widgetWithText(CustomPaint, 'PRODUCTS')
-      // find.byType(GlowingOverscrollIndicator)
-      // find.widgetWithText(Scrollable, 'PRODUCTS')
-        expect(find.text("DESIGNERS"), findsOneWidget);
-        expect(find.text("CATEGORIES"), findsOneWidget);
+      case 'Product':
+        await $('DESIGNERS').waitUntilVisible();
+        await $('CATEGORIES').waitUntilVisible();
+        sectionPath = 'PRODUCTS';
 
         break;
-      case "Brand":
-        expect(find.text("PRODUCTS"), findsOneWidget);
-        await tester.tap(find.widgetWithText(GestureDetector, "VIEW MORE"));
-        await tester.pump();
-        expect(find.text("DESIGNERS"), '');
+      case 'Brand':
+        await $('PRODUCTS').waitUntilVisible();
+        await $('CATEGORIES').waitUntilVisible();
+        await $(find.widgetWithText(GestureDetector, 'VIEW MORE')).tap();
+        sectionPath = 'DESIGNERS';
 
         break;
       default:
-        await tester
-            .tap(find.widgetWithText(GestureDetector, "CATEGORIES VIEW More"));
-        await tester.pump();
-        expect(find.text("CATEGORIES VIEW More"), '');
+        await $(GestureDetector).containing('VIEW MORE').$(find.text('CATEGORIES')).tap();
+        // await $(find.widgetWithText(GestureDetector, 'CATEGORIES VIEW More')).tap();
+        // await $('CATEGORIES VIEW More').waitUntilVisible();
+        sectionPath = 'CATEGORIES';
 
         break;
     }
 
-    // final String name =
-    //     await driver.getText(drive.find.byValueKey(sectionPath));
-    // log(sectionPath);
-    // log(name);
-    await tester.tap(find.widgetWithText(IconButtonTheme, sectionPath));
-    await tester.pump();
+    final String name = await $(find.widgetWithText(IconButtonTheme, sectionPath)).text!;
+    // find.ancestor(
+    //   of: find.text('Activated'),
+    //   matching: find.descendant(
+    //     of: find.byType(ListTile),
+    //     matching: find.byKey(Key('learnMore')),
+    //   ),
+    // ).first
+    print(name);
+    await $(find.widgetWithText(IconButtonTheme, sectionPath)).tap();
 
     switch (section) {
-      case "Product":
-      //expect(find.text(name).isEnabled(), '');
+      case 'Product':
+        await $(name).waitUntilVisible();
 
         break;
-      case "Brand":
-      //expect(find.text(name.toUpperCase()).isEnabled(), '');
+      case 'Brand':
+        await $(name.toUpperCase()).waitUntilVisible();
 
         break;
       default:
-      //expect(find.text(name.toUpperCase()).isDisplayed(), '');
+        await $(name.toUpperCase()).waitUntilVisible();
 
         break;
     }
   }
 
-  Future<void> goToAllProductsFromLiveSearchResult(String searchRequest) async {
-    await tester.scrollUntilVisible(find.widgetWithText(GestureDetector, "VIEW ALL PRODUCTS"), -100.0);
-    await tester.tap(find.widgetWithText(GestureDetector, "VIEW ALL PRODUCTS"));
-    await tester.pump();
+  Future<void> goToAllProductsFromLiveSearchResult(PatrolTester $, String searchRequest) async {
+    await $.tester.scrollUntilVisible(find.widgetWithText(GestureDetector, "VIEW ALL PRODUCTS"), -100.0);
+    await $(find.widgetWithText(GestureDetector, 'VIEW ALL PRODUCTS')).tap();
   }
 }

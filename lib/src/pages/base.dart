@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:patrol/patrol.dart';
 
 import 'cart.dart';
 import 'catalog.dart';
@@ -44,11 +45,11 @@ class Base {
     required this.tester,
   });
 
-  Future<void> scrollUpByGesture(double startY, double stepY) async {
-    final gesture = await tester.startGesture(Offset(0, startY)); //Position of the scrollview
+  Future<void> scrollUpByGesture(PatrolTester $, double startY, double stepY) async {
+    final gesture = await $.tester.startGesture(Offset(0, startY)); //Position of the scrollview
     await gesture.moveBy(Offset(0, -stepY)); //How much to scroll by
     await gesture.up();
-    await tester.pump();
+    await $.tester.pump();
   }
 
   /// Generation of a random string, the number of digits

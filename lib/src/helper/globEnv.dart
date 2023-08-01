@@ -45,11 +45,11 @@ class GlobEnv{
   static const String buyerPhone = '+431521770';
 
   /// buyer's stripes used in tests.
-  static const String buyerStripesNonAuth = '4242 4242 4242 4242';
+  static const String buyerStripesNonAuth = '4242424242424242';
 
-  static const String buyerStripesAuth = '4000 0027 6000 3184';
+  static const String buyerStripesAuth = '4000002760003184';
 
-  static const String buyerStripesPauper = '4000 0000 0000 9995';
+  static const String buyerStripesPauper = '4000000000009995';
 
   static const String iosDbStage = 'https://babydriver-ios.bambinimirror.com/';
 

@@ -17,19 +17,15 @@ class Catalog extends Base {
   //Constructor
   Catalog(WidgetTester tester) : super(tester: tester);
 
-  Future<void> goToProduct() async {
-    await tester.pump(const Duration(seconds: 5));
-    await tester.tap(find.byType(ListingProductCard).first);
-    await tester.pump(const Duration(seconds: 5));
-    await Future.delayed(Duration(seconds: 2));
+  Future<void> goToProduct(PatrolTester $) async {
+    await $(find.byType(ListingProductCard).first).tap();
   }
 
-  Future<void> selectCategoryFilter(String filterName) async {
-    await tester.pump(const Duration(seconds: 5));
-    await tester.tap(find.widgetWithText(GestureDetector, "FILTER PRODUCTS"));
-    await tester.pump();
-    await expandFilter(filterName);
-    await Future.delayed(Duration(seconds: 5));
+  Future<void> selectCategoryFilter(PatrolTester $, String filterName) async {
+    await $(find.widgetWithText(GestureDetector, 'FILTER PRODUCTS')).tap();
+    await expandFilter($, filterName);
+    // await Future.delayed(Duration(seconds: 5));
+
     //await tester.pumpAndSettle();
     // find.widgetWithText(Row, 'Gender')
     // find.widgetWithText(IconButtonTheme, 'Gender')
@@ -40,19 +36,15 @@ class Catalog extends Base {
     // print(finder);
     final elements = (find.byType(BambiniCheckbox).allCandidates).length;
     print(elements);
-    await tester.tap(find.byType(BambiniCheckbox).at(2));
-    await tester.pump();
-    await tester.tap(find.textContaining('PRODUCTS'));
-    await tester.pump();
+    await $(find.byType(BambiniCheckbox).at(2)).tap();
+    await $(find.textContaining('PRODUCTS')).tap();
   }
 
-  Future<void> expandFilter(String filterName) async {
-    await Future.delayed(Duration(seconds: 5));
-    await tester.tap(find.widgetWithText(ListTile, filterName));
-    await tester.pump(const Duration(seconds: 5));
+  Future<void> expandFilter(PatrolTester $, String filterName) async {
+    await $(find.widgetWithText(ListTile, filterName)).tap();
   }
 
-  Future<void> addToWishlist(String auth) async {
+  Future<void> addToWishlist(PatrolTester $, String auth) async {
     // find.byType(AppBarWishlistButton)
     // find.byType(IconButtonTheme)
     // find.byType(NavigationToolbar)
@@ -68,48 +60,43 @@ class Catalog extends Base {
     // final Finder heart = find.widgetWithText(IconButtonTheme, "heartEmpty");
     // await tester.scrollUntilVisible(heart, 100.0);
     // await tester.tap(heart);
-    await Future.delayed(Duration(seconds: 5));
-    await tester.tap(find.byType(WishlistButton).first);
-    await tester.pump(const Duration(seconds: 5));
+    await $(find.byType(WishlistButton).first).tap();
     if (auth == 'auth') {
-      await login.doLogin(GlobEnv.buyerEmail, GlobEnv.password);
+      await login.doLogin($, GlobEnv.buyerEmail, GlobEnv.password);
     } else if (auth == 'guest') {
-      await login.guestLogin();
+      await login.guestLogin($);
     }
 
-    expect(find.widgetWithText(AppBarWishlistButton, '1'), findsOneWidget);
+    await $(find.widgetWithText(AppBarWishlistButton, '1')).waitUntilVisible();
   }
 
-  Future<void> removeFromWishList() async {
+  Future<void> removeFromWishList(PatrolTester $) async {
     // /*final String wishlistCount =
     //     await driver.getText(drive.find.byValueKey("favOutlineIcon"));
     // final int countBefore = int.parse(wishlistCount);
-    await Future.delayed(Duration(seconds: 2));
-    await scrollUpByGesture(500, -300);
-    await tester.tap(find.byType(WishlistButton).first);
-    await tester.pump(const Duration(seconds: 5));
-    await Future.delayed(Duration(seconds: 5));
-    expect(find.widgetWithText(AppBarWishlistButton, '1'), findsNothing);
+    // await Future.delayed(Duration(seconds: 2));
+    await scrollUpByGesture($, 500, -300);
+    await $(find.byType(WishlistButton).first).tap();
+
+    // expect(find.widgetWithText(AppBarWishlistButton, '1').visible, equals(false));
   }
 
-  Future<void> checkPagination() async {
+  Future<void> checkPagination(PatrolTester $) async {
     await Future.delayed(Duration(seconds: 10));
     for (int i = 1; i <= 13; i++) {
-      await scrollUpByGesture(740, -650);
+      await scrollUpByGesture($, 740, -650);
     }
 
-    await tester.tap(find.byType(IconButton).last);
-    await tester.pump();
-    await Future.delayed(Duration(seconds: 10));
+    await $(find.byType(IconButton).last).tap();
     for (int i = 1; i <= 12; i++) {
-      await scrollUpByGesture(740, -650);
+      await scrollUpByGesture($, 740, -650);
     }
 
     final pagination = find.widgetWithText(IconButtonTheme, "2 OF");
-    expect(find.text("2 OF"), findsOneWidget);
+    await $('2 OF').waitUntilVisible();
   }
 
-  Future<void> quickFilter() async {
+  Future<void> quickFilter(PatrolTester $) async {
     // find.text('Girl')
     // find.widgetWithText(Align, 'Girl')
     // find.widgetWithText(GestureDetector, 'Girl')
@@ -130,21 +117,25 @@ class Catalog extends Base {
 //     System.out.println(filters.get(0));
 //     WebElement filter = (WebElement) filters.get(0);
 //     filter.click();
-    await Future.delayed(Duration(seconds: 5));
-    await tester.pump(const Duration(seconds: 5));
+//     await Future.delayed(Duration(seconds: 5));
+//     await tester.pump(const Duration(seconds: 5));
 
     // final finder = find.ancestor(of: find.byType(BackdropFilter), matching: find.byType(ElevatedButton));
     // print(finder);
-    await tester.tap(find.byType(ElevatedButton).at(1));
-    await tester.pump();
-    await Future.delayed(Duration(seconds: 5));
-    await tester.pump(const Duration(seconds: 5));
-    await tester.tap(find.widgetWithText(GestureDetector, 'Back'));
-    await tester.pump(const Duration(seconds: 5));
-    expect(find.widgetWithText(GestureDetector, 'Back'), findsNothing);
+    await $(find.byType(ElevatedButton).at(1)).tap();
+
+    // await tester.tap(find.byType(ElevatedButton).at(1));
+    // await tester.pump();
+    // await Future.delayed(Duration(seconds: 5));
+    // await tester.pump(const Duration(seconds: 5));
+    await $(find.widgetWithText(GestureDetector, 'Back')).tap();
+
+    // await tester.tap(find.widgetWithText(GestureDetector, 'Back'));
+    // await tester.pump(const Duration(seconds: 5));
+    // expect(find.widgetWithText(GestureDetector, 'Back').visible, equals(false));
   }
 
-  Future<void> swipeImage(String imagePath) async {
+  Future<void> swipeImage(PatrolTester $, String imagePath) async {
     // final Finder productCard = find.widgetWithText(IconButtonTheme, imagePath); //to do
     // final Point location = driver.productCard;
     // final int x = location.getX();

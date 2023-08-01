@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'base.dart';
+import 'package:patrol/patrol.dart';
 
 class Menu extends Base {
   final String menuTab = "Menu";
@@ -9,54 +10,38 @@ class Menu extends Base {
   //Constructor
   Menu(WidgetTester tester) : super(tester: tester);
 
-  Future<void> goToMenuCategory(String category) async {
-    await navBar.goToNavTab(menuTab);
-    //await tester.scrollUntilVisible(
-    //    find.widgetWithText(ListTileTheme, category), -100.0, scrollable: find.byType(Scrollable).last);
-    print(find.widgetWithText(ListTile, category));
-    await tester.tap(find.widgetWithText(ListTile, category));
-    await tester.pump();
+  Future<void> goToMenuCategory(PatrolTester $, String category) async {
+    await navBar.goToNavTab($, menuTab);
+    await $(find.widgetWithText(ListTile, category)).tap();
     //await categoryCheck(category);
   }
 
-  Future<void> categoryCheck(String category) async {
-    await tester.tap(find.widgetWithText(IconButtonTheme, category));
+  Future<void> categoryCheck(PatrolTester $, String category) async {
+    await $(find.widgetWithText(IconButtonTheme, category)).tap();
   }
 
-  Future<void> changeCountry(String country) async {
-    await navBar.goToNavTab(menuTab);
-    await tester.tap(find.widgetWithText(IconButtonTheme, "COUNTRY"));
-    await tester.pump(const Duration(seconds: 5));
-    await tester.tap(find.widgetWithText(IconButtonTheme, country));
-    await tester.pump(const Duration(seconds: 5));
-    // find.text('ALBANIA')
-    // find.widgetWithText(Row, 'ALBANIA')
-    // find.widgetWithText(IconButtonTheme, 'ALBANIA')
-    // find.widgetWithText(Ink, 'ALBANIA')
-    // find.widgetWithText(MouseRegion, 'ALBANIA')
-    // find.widgetWithText(InkWell, 'ALBANIA')
-    expect(find.text(country), findsOneWidget);
+  Future<void> changeCountry(PatrolTester $, String country) async {
+    await navBar.goToNavTab($, menuTab);
+    await $(find.widgetWithText(IconButtonTheme, 'COUNTRY')).tap();
+    await $(find.widgetWithText(IconButtonTheme, country)).tap();
+    await $(country).waitUntilVisible();
   }
 
-  Future<void> changeCurrency(String currency) async {
-    await navBar.goToNavTab(menuTab);
-    await tester.tap(find.widgetWithText(IconButtonTheme, "CURRENCY"));
-    await tester.pump(const Duration(seconds: 5));
-    await tester.tap(find.widgetWithText(IconButtonTheme, currency));
-    List symbol = currency.split(" ");
-    expect(find.text(symbol[0]), findsOneWidget);
+  Future<void> changeCurrency(PatrolTester $, String currency) async {
+    await navBar.goToNavTab($, menuTab);
+    await $(find.widgetWithText(IconButtonTheme, 'CURRENCY')).tap();
+    await $(find.widgetWithText(IconButtonTheme, currency)).tap();
+    List symbol = currency.split(' ');
+    await $(symbol[0]).waitUntilVisible();
   }
 
-  Future<void> goToProfile() async {
-    await navBar.goToNavTab(menuTab);
-    await tester.tap(find.widgetWithText(ListTile, "MY ACCOUNT"));
-    await tester.pump();
+  Future<void> goToProfile(PatrolTester $) async {
+    await navBar.goToNavTab($, menuTab);
+    await $(find.widgetWithText(ListTile, 'MY ACCOUNT')).tap();
   }
 
-  Future<void> logIn(String email, String password) async {
-    await goToProfile();
-    //await tester.tap(find.widgetWithText(IconButtonTheme, "SIGN IN"));
-    await tester.pump(const Duration(seconds: 5));
-    await login.doLogin(email, password);
+  Future<void> logIn(PatrolTester $, String email, String password) async {
+    await goToProfile($);
+    await login.doLogin($, email, password);
   }
 }

@@ -12,6 +12,8 @@ import 'package:flutter_tests_companion/helper.dart';
 import '../helper/globEnv.dart';
 import 'base.dart';
 import 'cart.dart';
+import 'package:flutter/services.dart';
+import 'package:patrol/patrol.dart';
 
 class Checkout extends Base {
   static const String pay = "PAY SECURELY";
@@ -21,96 +23,104 @@ class Checkout extends Base {
   Checkout(WidgetTester tester) : super(tester: tester);
 
   Future<void> fillContacts(
-      String country, String address, String city, String postcode) async {
+      PatrolTester $, String country, String address, String city, String postcode) async {
     // await Future.delayed(Duration(seconds: 5));
     await tester.pump(const Duration(seconds: 10));
-    await pumpUntilFound(
-      tester,
-      find.widgetWithText(GestureDetector, 'CONTINUE'),
-      timeout: const Duration(seconds: 20),
-    );
-    // await tester.pumpAndSettle();
-    await tester.enterText(find.widgetWithText(TextFormField, 'First Name *').first,
-        GlobEnv.buyerName);
-    await tester.pump();
-    await tester.enterText(find.widgetWithText(TextFormField, 'Last Name *').first,
-        GlobEnv.buyerLastName);
-    await tester.pump();
-    await tester.enterText(
-        find.widgetWithText(TextFormField, 'Address Line 1 *'), address);
-    await tester.pump();
+    await $(find.widgetWithText(TextFormField, 'First Name *').first).enterText(GlobEnv.buyerName, visibleTimeout: Duration(seconds: 5), settleTimeout: Duration(seconds: 5));
+    await $(find.widgetWithText(TextFormField, 'Last Name *').first).enterText(GlobEnv.buyerLastName);
+    await $(find.widgetWithText(TextFormField, 'Address Line 1 *')).enterText(address);
     final countryDropdown = find.widgetWithText(RequiredFormLabel, 'Country *').first;
-    final point = await tester.getCenter(countryDropdown);
+    final point = await $.tester.getCenter(countryDropdown);
     print(point.dx);
     print(point.dy);
-    await tester.tapAt(Offset(point.dx, point.dy + 20));
-    // await tester.tap(find.widgetWithText(RequiredFormLabel, 'Country *').first);
-    await tester.pump(const Duration(seconds: 2));
-    await tester.scrollUntilVisible(
+    await $.tester.tapAt(Offset(point.dx, point.dy + 20));
+    await $.tester.scrollUntilVisible(
         find.widgetWithText(ListTile, country), -100.0, scrollable: find.byType(Scrollable).last);
-    await tester.pump(const Duration(seconds: 2));
-    await tester.tap(find.widgetWithText(IconButtonTheme, country));
-    await tester.pump(const Duration(seconds: 2));
-    await tester.enterText(
-        find.widgetWithText(TextFormField, 'City *'), city);
-    await tester.pump();
-    await tester.enterText(
-        find.widgetWithText(TextFormField, 'Postal code *'), postcode);
-    await tester.pump();
-    await tester.enterText(find.widgetWithText(TextFormField, 'Telephone *'),
-        GlobEnv.buyerPhone);
-    await tester.pump();
-    await tester.scrollUntilVisible(find.byType(FormButton), -100.0, scrollable: find.byType(Scrollable).first);
-    await tester.pump(const Duration(seconds: 2));
-    // find.widgetWithText(GestureDetector, 'CONTINUE')
-    await tester.tap(find.byType(FormButton));
-    await tester.pump(const Duration(seconds: 5));
+    await $(find.widgetWithText(IconButtonTheme, country)).tap();
+    await $(find.widgetWithText(TextFormField, 'City *')).enterText(city);
+    await $(find.widgetWithText(TextFormField, 'Postal code *')).enterText(postcode);
+    await $.tester.scrollUntilVisible(find.byType(FormButton), -100.0, scrollable: find.byType(Scrollable).first);
+    await $(find.widgetWithText(TextFormField, 'Telephone *')).enterText(GlobEnv.buyerPhone);
+    await $.tester.scrollUntilVisible(find.byType(FormButton), -100.0, scrollable: find.byType(Scrollable).first);
+    await $(find.byType(FormButton)).tap();
   }
 
-  Future<int> chooseShippingMethod(String deliveryType) async {
-    await tester.pump(const Duration(seconds: 10));
-    await pumpUntilFound(
-      tester,
-      find.byType(FormButton),
-      timeout: const Duration(seconds: 20),
-    );
-
+  Future<int> chooseShippingMethod(PatrolTester $, String deliveryType) async {
     if (deliveryType == 'standard') {
-      await tester.tap(find.byType(BambiniCheckboxTick).first);
-      await tester.pump(const Duration(seconds: 5));
+      await $(find.byType(BambiniCheckboxTick).first).tap();
     } else {
-      await tester.tap(find.byType(BambiniCheckboxTick).last);
-      await tester.pump(const Duration(seconds: 5));
+      await $(find.byType(BambiniCheckboxTick).last).tap();
     }
 
-    await tester.tap(find.byType(FormButton));
-    await tester.pump(const Duration(seconds: 5));
+    await $(find.byType(FormButton)).tap();
     // int totalPrice = await cart.totalAmount();
     int totalPrice = 0;
 
     return totalPrice;
   }
 
-  Future<void> fillCardData(String cardNumber) async {
-    await tester.pump(const Duration(seconds: 10));
-    await pumpUntilFound(
-      tester,
-      find.byType(CardField),
-      timeout: const Duration(seconds: 20),
+  Future<void> fillCardData(PatrolTester $, String cardNumber) async {
+    await $.tester.pump(const Duration(seconds: 5));
+
+    // final stripe = find.byType(StripeForm);
+    // final point = await $.tester.getCenter(stripe);
+    // print(point.dx);
+    // print(point.dy);
+    // await $.tester.tapAt(Offset(point.dx, point.dy));
+    // await $(find.byType(StripeForm)).tap();
+    //await $.native.tap(Selector(text: '1234123412341234'));
+    // await $.native.enterText(
+    //   Selector(text: '1234123412341234 MM/YY'),
+    //   text: '${cardNumber}1228123',
+    // );
+    // await $.native.enterTextByIndex(
+    //   cardNumber,
+    //   index: 1
+    // );
+    // await $.native.enterTextByIndex(
+    //   cardNumber,
+    //   index: 1,
+    //   keyboardBehavior: KeyboardBehavior.showAndDismiss,
+    // );
+    await $.native.enterTextByIndex(
+      ' ',
+      index: 1,
+      keyboardBehavior: KeyboardBehavior.showAndDismiss,
     );
-    // find.byType(CardField)
-    // find.byType(StripeForm)
-    await tester.enterText(find.byType(StripeForm), '${cardNumber}1228123');
-    await tester.pump(const Duration(seconds: 5));
-    // await tester.enterText(
-    //     find.widgetWithText(IconButtonTheme, "expiration date"), "1228");
-    // await tester.enterText(find.widgetWithText(IconButtonTheme, "CVC"), "123");
+    await $.tester.scrollUntilVisible(find.byType(FormButton), -100.0, scrollable: find.byType(Scrollable).first);
+
+    // await Future.delayed(Duration(seconds: 15));
+
+    // await $.tester.pump(const Duration(seconds: 15));
+    //
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit4);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit4);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit4);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit4);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit4);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit4);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit1);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit8);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit1);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit2);
+    // await $.tester.sendKeyEvent(LogicalKeyboardKey.digit3);
+    // await tester.pump(const Duration(seconds: 10));
   }
 
-  Future<void> payByPayPal() async {
-    await tester.tap(find.byType(BambiniCheckboxTick).last);
-    await tester.pump(const Duration(seconds: 5));
-    await confirmOrder();
+  Future<void> payByPayPal(PatrolTester $) async {
+    await $(find.byType(BambiniCheckboxTick).last).tap();
+
+    // await tester.tap(find.byType(BambiniCheckboxTick).last);
+    // await tester.pump(const Duration(seconds: 5));
+    await confirmOrder($);
     // await tester.enterText(
     //     find.widgetWithText(IconButtonTheme, "Email address or mobile number"),
     //     GlobEnv.paypalLogin);
@@ -124,141 +134,81 @@ class Checkout extends Base {
     // await tester.pump(const Duration(seconds: 5));
   }
 
-  Future<void> payByApplePay() async {
-    await tester
-        .tap(find.widgetWithText(IconButtonTheme, "Buy with Apple Pay"));
-    await addBillingAddressForApplePay();
-    await addShippingContactForApplePay();
-    await addShippingAddressForApplePay();
-    await tester.tap(find.widgetWithText(IconButtonTheme, "Pay with Passcode"));
-    await tester.pump(const Duration(seconds: 5));
+  Future<void> payByApplePay(PatrolTester $) async {
+    await $(find.widgetWithText(IconButtonTheme, 'Buy with Apple Pay')).tap();
+    await addBillingAddressForApplePay($);
+    await addShippingContactForApplePay($);
+    await addShippingAddressForApplePay($);
+    await $(find.widgetWithText(IconButtonTheme, 'Pay with Passcode')).tap();
   }
 
-  Future<void> addBillingAddressForApplePay() async {
-    await tester
-        .tap(find.widgetWithText(IconButtonTheme, "Add Billing Address"));
-    await tester.pump();
-    await tester
-        .tap(find.widgetWithText(IconButtonTheme, "Add Billing Address"));
-    await tester.pump();
-    await tester.enterText(
-        find.widgetWithText(IconButtonTheme, "First Name"), GlobEnv.buyerName);
-    await tester.enterText(find.widgetWithText(IconButtonTheme, "Last Name"),
-        GlobEnv.buyerLastName);
-    await tester.enterText(
-        find.widgetWithText(
-            IconButtonTheme, "Street, Search Contact or Address"),
-        GlobEnv.buyerAddress);
-    await tester.enterText(
-        find.widgetWithText(IconButtonTheme, "State"), "state");
-    await tester.enterText(
-        find.widgetWithText(IconButtonTheme, "City"), GlobEnv.buyerCity);
-    await tester.enterText(
-        find.widgetWithText(IconButtonTheme, "ZIP"), GlobEnv.buyerPostcode);
-    await tester.tap(find.widgetWithText(IconButtonTheme, done));
-    await tester.pump();
-    await tester.tap(find.widgetWithText(IconButtonTheme, "close"));
-    await tester.pump(const Duration(seconds: 5));
+  Future<void> addBillingAddressForApplePay(PatrolTester $) async {
+    await $(find.widgetWithText(IconButtonTheme, 'Add Billing Address')).tap();
+    await $(find.widgetWithText(IconButtonTheme, 'Add Billing Address')).tap();
+    await $(find.widgetWithText(IconButtonTheme, 'First Name')).enterText(GlobEnv.buyerName);
+    await $(find.widgetWithText(IconButtonTheme, 'Last Name')).enterText(GlobEnv.buyerLastName);
+    await $(find.widgetWithText(IconButtonTheme, 'Street, Search Contact or Address')).enterText(GlobEnv.buyerAddress);
+    await $(find.widgetWithText(IconButtonTheme, 'State')).enterText('state');
+    await $(find.widgetWithText(IconButtonTheme, 'City')).enterText(GlobEnv.buyerCity);
+    await $(find.widgetWithText(IconButtonTheme, 'ZIP')).enterText(GlobEnv.buyerPostcode);
+    await $(find.widgetWithText(IconButtonTheme, done)).tap();
+    await $(find.widgetWithText(IconButtonTheme, 'close')).tap();
   }
 
-  Future<void> addShippingContactForApplePay() async {
-    await tester.tap(find.widgetWithText(IconButtonTheme, "Add Contact"));
-    await tester.pump();
-    await tester.tap(find.widgetWithText(IconButtonTheme, "Add Phone Number"));
-    await tester.pump();
-    await tester.enterText(find.widgetWithText(IconButtonTheme, "Phone Number"),
-        GlobEnv.buyerPhone);
-    await tester.tap(find.widgetWithText(IconButtonTheme, "Add Email Address"));
-    await tester.pump();
-    await tester.enterText(
-        find.widgetWithText(IconButtonTheme, "Email"), GlobEnv.buyerEmail);
-    await tester.tap(find.widgetWithText(IconButtonTheme, done));
-    await tester.pump(const Duration(seconds: 5));
+  Future<void> addShippingContactForApplePay(PatrolTester $) async {
+    await $(find.widgetWithText(IconButtonTheme, 'Add Contact')).tap();
+    await $(find.widgetWithText(IconButtonTheme, 'Add Phone Number')).tap();
+    await $(find.widgetWithText(IconButtonTheme, 'Phone Number')).enterText(GlobEnv.buyerPhone);
+    await $(find.widgetWithText(IconButtonTheme, 'Add Email Address')).tap();
+    await $(find.widgetWithText(IconButtonTheme, 'Email')).enterText(GlobEnv.buyerEmail);
+    await $(find.widgetWithText(IconButtonTheme, done)).tap();
   }
 
-  Future<void> addShippingAddressForApplePay() async {
-    await tester.tap(find.widgetWithText(IconButtonTheme, "Add Shipping"));
-    await tester.pump();
-    await tester
-        .tap(find.widgetWithText(IconButtonTheme, "Add Shipping Address"));
-    await tester.pump();
-    await tester
-        .tap(find.widgetWithText(IconButtonTheme, "Add Address Manually"));
-    await tester.pump();
-    await tester.enterText(
-        find.widgetWithText(IconButtonTheme, "First Name"), GlobEnv.buyerName);
-    await tester.enterText(find.widgetWithText(IconButtonTheme, "Last Name"),
-        GlobEnv.buyerLastName);
-    await tester.enterText(
-        find.widgetWithText(
-            IconButtonTheme, "Street, Search Contact or Address"),
-        GlobEnv.buyerAddress);
-    await tester.enterText(
-        find.widgetWithText(IconButtonTheme, "State"), "state");
-    await tester.enterText(
-        find.widgetWithText(IconButtonTheme, "City"), GlobEnv.buyerCity);
-    await tester.enterText(
-        find.widgetWithText(IconButtonTheme, "ZIP"), GlobEnv.buyerPostcode);
-    await tester.tap(find.widgetWithText(IconButtonTheme, done));
-    await tester.pump();
-    await tester.tap(find.widgetWithText(IconButtonTheme, done));
-    await tester.pump(const Duration(seconds: 5));
+  Future<void> addShippingAddressForApplePay(PatrolTester $) async {
+    await $(find.widgetWithText(IconButtonTheme, 'Add Shipping')).tap();
+    await $(find.widgetWithText(IconButtonTheme, 'Add Shipping Address')).tap();
+    await $(find.widgetWithText(IconButtonTheme, 'Add Address Manually')).tap();
+    await $(find.widgetWithText(IconButtonTheme, 'First Name')).enterText(GlobEnv.buyerName);
+    await $(find.widgetWithText(IconButtonTheme, 'Last Name')).enterText(GlobEnv.buyerLastName);
+    await $(find.widgetWithText(IconButtonTheme, 'Street, Search Contact or Address')).enterText(GlobEnv.buyerAddress);
+    await $(find.widgetWithText(IconButtonTheme, 'State')).enterText('state');
+    await $(find.widgetWithText(IconButtonTheme, 'City')).enterText(GlobEnv.buyerCity);
+    await $(find.widgetWithText(IconButtonTheme, 'ZIP')).enterText(GlobEnv.buyerPostcode);
+    await $(find.widgetWithText(IconButtonTheme, done)).tap();
+    await $(find.widgetWithText(IconButtonTheme, done)).tap();
   }
 
-  Future<void> confirmOrder() async {
-    await tester.tap(find.byType(FormButton));
-    await tester.pump(const Duration(seconds: 5));
+  Future<void> confirmOrder(PatrolTester $) async {
+    await $.tester.scrollUntilVisible(find.byType(FormButton), -100.0, scrollable: find.byType(Scrollable).first);
+    await $(find.byType(FormButton)).tap();
   }
 
-  Future<void> complete3DSecure(bool authorize) async {
-    await confirmOrder();
-    await tester.pump(const Duration(seconds: 10));
-    await pumpUntilFound(
-      tester,
-      find.widgetWithText(IconButtonTheme, "COMPLETE AUTHENTICATION"),
-      timeout: const Duration(seconds: 20),
-    );
+  Future<void> complete3DSecure(PatrolTester $, bool authorize) async {
+    await confirmOrder($);
     if (authorize) {
-      await tester.tap(find.widgetWithText(IconButtonTheme, "COMPLETE AUTHENTICATION"));
-      await tester.pump();
+      await $(find.widgetWithText(IconButtonTheme, 'COMPLETE AUTHENTICATION')).tap();
     } else {
-      await tester.tap(find.widgetWithText(IconButtonTheme, "FAIL AUTHENTICATION"));
-      await tester.pump();
+      await $(find.widgetWithText(IconButtonTheme, 'FAIL AUTHENTICATION')).tap();
     }
 
-    await tester.tap(find.widgetWithText(IconButtonTheme, "Close"));
-    await tester.pump(const Duration(seconds: 5));
+    await $(find.widgetWithText(IconButtonTheme, 'Close')).tap();
   }
 
-  Future<void> waitAlert(String message, bool close) async {
-    expect(find.text(message), findsOneWidget);
+  Future<void> waitAlert(PatrolTester $, String message, bool close) async {
+    await $(message).waitUntilVisible();
     if (close) {
-      await tester.tap(find.widgetWithText(IconButtonTheme, "closeIconTemplate"));
-      await tester.pump(const Duration(seconds: 5));
+      await $(find.widgetWithText(IconButtonTheme, 'closeIconTemplate')).tap();
     }
   }
 
-  Future<Future<String>> viewOrder(int expected) async {
-    await tester.pump(const Duration(seconds: 10));
-    await pumpUntilFound(
-      tester,
-      find.byType(ElevatedButton),
-      timeout: const Duration(seconds: 20),
-    );
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pump(const Duration(seconds: 5));
-
-    return orderData(expected);
+  Future<Future<String>> viewOrder(PatrolTester $, int expected) async {
+    await $(find.byType(ElevatedButton)).tap();
+    return orderData($, expected);
   }
 
-  Future<String> orderData(int expected) async {
-    // final String orderId =
-    //     await driver.getText(drive.find.byValueKey("Reference"));
-    // log(orderId);
-    // final String totalPriceField =
-    //     await driver.getText(drive.find.byValueKey("Total"));
-    // final int totalPrice =
-    //     int.parse(totalPriceField.replaceAll(RegExp(r'\d'), ''));
+  Future<String> orderData(PatrolTester $, int expected) async {
+
+    // await $(expected).waitUntilVisible();
     // expect(totalPrice, expected);
     const String orderId = '';
 

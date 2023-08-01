@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'base.dart';
+import 'package:patrol/patrol.dart';
 
 class NavBar extends Base {
   //Constructor
   NavBar(WidgetTester tester) : super(tester: tester);
 
-  Future<void> goToNavTab(String tabName) async {
-
-    final navButton = find.widgetWithText(Transform, tabName);
-
-    await tester.tap(
-      navButton,
-      warnIfMissed: false,
-    );
-
-    await tester.pump(const Duration(seconds: 5));
-
-    //await Future.delayed(Duration(seconds: 10));
+  Future<void> goToNavTab(PatrolTester $, String tabName) async {
+    await $(find.widgetWithText(Align, tabName)).tap(visibleTimeout: Duration(seconds: 10));
   }
 }
