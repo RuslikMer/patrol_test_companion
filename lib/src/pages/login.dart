@@ -10,14 +10,16 @@ class Login extends Base {
   Login(WidgetTester tester) : super(tester: tester);
 
   Future<void> doLogin(PatrolTester $, String email, String password) async {
-    await $(find.byType(TextFormField).first).enterText(email);
+    await $(find.widgetWithText(TextFormField, 'Your E-mail *')).enterText(email);
     await $(find.byType(TextFormField).last).enterText(password);
+    await $.tester.scrollUntilVisible(find.byType(FormButton).last, -100.0, scrollable: find.byType(Scrollable).first);
     await $(find.byType(FormButton).last).tap();
   }
 
   Future<void> forgotPassword(PatrolTester $) async {
     await $(find.widgetWithText(Align, 'Forgot password?').first).tap();
     await $(find.byType(EditableText).last).enterText('${generateString(5)}@bambinifashion.com');
+    await $.tester.scrollUntilVisible(find.byType(FormButton).last, -100.0, scrollable: find.byType(Scrollable).first);
     await $(find.byType(FormButton).last).tap();
     await checkout.waitAlert($, 'A password reset link was sent. Click the link in the email to create a new password.', false);
   }
@@ -29,6 +31,7 @@ class Login extends Base {
     await $(find.widgetWithText(TextFormField, 'Your E-mail *')).enterText(email);
     await $(find.widgetWithText(TextFormField, 'New password')).enterText(password);
     await $(find.byType(TextFormField).last).enterText(password);
+    await $.tester.scrollUntilVisible(find.byType(FormButton), -100.0, scrollable: find.byType(Scrollable).first);
     await $(find.byType(FormButton)).tap();
   }
 

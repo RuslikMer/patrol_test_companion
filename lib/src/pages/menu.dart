@@ -6,6 +6,8 @@ import 'package:patrol/patrol.dart';
 class Menu extends Base {
   final String menuTab = "Menu";
   final String newIn = "NEW IN";
+  final String sale = "SALE";
+  final String boy = "BOY";
 
   //Constructor
   Menu(WidgetTester tester) : super(tester: tester);

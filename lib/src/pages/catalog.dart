@@ -25,7 +25,7 @@ class Catalog extends Base {
     await $(find.widgetWithText(GestureDetector, 'FILTER PRODUCTS')).tap();
     await expandFilter($, filterName);
     // await Future.delayed(Duration(seconds: 5));
-
+    
     //await tester.pumpAndSettle();
     // find.widgetWithText(Row, 'Gender')
     // find.widgetWithText(IconButtonTheme, 'Gender')
@@ -66,7 +66,7 @@ class Catalog extends Base {
     } else if (auth == 'guest') {
       await login.guestLogin($);
     }
-
+    
     await $(find.widgetWithText(AppBarWishlistButton, '1')).waitUntilVisible();
   }
 
@@ -86,7 +86,7 @@ class Catalog extends Base {
     for (int i = 1; i <= 13; i++) {
       await scrollUpByGesture($, 740, -650);
     }
-
+    
     await $(find.byType(IconButton).last).tap();
     for (int i = 1; i <= 12; i++) {
       await scrollUpByGesture($, 740, -650);

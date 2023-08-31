@@ -1,4 +1,5 @@
 import 'package:bambinifashion/modules/home/presentation/category_tile.dart';
+import 'package:bambinifashion/modules/core/presentation/app_bar_wishlist_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'base.dart';
@@ -17,6 +18,6 @@ class Home extends Base {
   }
 
   Future<void> goToWishlist(PatrolTester $) async {
-    await $(find.widgetWithText(IconButtonTheme, 'favOutlineIcon')).tap();
+    await $(find.byType(AppBarWishlistButton)).tap();
   }
 }

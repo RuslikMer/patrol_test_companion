@@ -83,9 +83,9 @@ class Checkout extends Base {
     //   keyboardBehavior: KeyboardBehavior.showAndDismiss,
     // );
     await $.native.enterTextByIndex(
-      ' ',
+      cardNumber,
       index: 1,
-      keyboardBehavior: KeyboardBehavior.showAndDismiss,
+      keyboardBehavior: KeyboardBehavior.alternative,
     );
     await $.tester.scrollUntilVisible(find.byType(FormButton), -100.0, scrollable: find.byType(Scrollable).first);
 
